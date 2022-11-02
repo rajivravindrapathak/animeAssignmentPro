@@ -13,10 +13,10 @@ const Cartpage = () => {
     const [page, setPage] = useState(1);
 
     useEffect(()=>{
-        fetchData({page});
+        fetchData();
       },[page])
 
-    const fetchData = async ({page}) => {
+    const fetchData = async () => {
         setLoading(true);
         axios({
           method: 'get',
@@ -25,8 +25,6 @@ const Cartpage = () => {
             _page: page,
             _limit: 5,
             // rating_gte: filterRating,
-            // q: q,
-            // ...paramsForPayment
           }
         })
         .then(res => { 
@@ -47,7 +45,7 @@ const Cartpage = () => {
         })
         .then(res => {   
           setData(res.data.data);
-          // setLoading(false);
+          setLoading(false);
         })
       }
 
@@ -56,16 +54,19 @@ const Cartpage = () => {
     return (
         <div>
             {loading && <div>loading</div>}
+            
             <div className='inputDiv'>
               <input onChange={(e) => setRecord(e.target.value)} placeholder='search any title'/>
               <button onClick={searchRecord}>search</button>
             </div>
             <div>
+
             {/* pagination */}
             <button disabled={page===1} onClick={() => setPage(page - 1)}>prev</button>
             <button onClick={() => setPage(page + 1)}>next</button>
             <PaginationComponent currentPage={page} lastPage={5} onPageChange={setPage}/>
             </div>
+
             <div className='mainDiv'>
               {
                 data.map((title) => {
